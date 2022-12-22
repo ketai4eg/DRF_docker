@@ -15,18 +15,18 @@ from DRF_test import settings
 
 
 # scheduler for e-mails sending
-class MyCronJob(CronJobBase):
-    schedule = Schedule(run_at_times=["09:00", ], retry_after_failure_mins=1)
-    code = 'views.MyCronJob'
-    def do(self):
-            queryset = User.objects.all()
-            for user in queryset:
-                if user.email:
-                    subject = 'Your statistics'
-                    message = f' Dear {user.username}, up to now you have available {Balance.objects.get(username=user.id).balance} money \n Have a nice day! '
-                    email_from = settings.EMAIL_HOST_USER
-                    recipient_list = [user.email, ]
-                    send_mail(subject, message, email_from, recipient_list)
+# class MyCronJob(CronJobBase):
+#     schedule = Schedule(run_at_times=["09:00", ], retry_after_failure_mins=1)
+#     code = 'views.MyCronJob'
+#     def do(self):
+#             queryset = User.objects.all()
+#             for user in queryset:
+#                 if user.email:
+#                     subject = 'Your statistics'
+#                     message = f' Dear {user.username}, up to now you have available {Balance.objects.get(username=user.id).balance} money \n Have a nice day! '
+#                     email_from = settings.EMAIL_HOST_USER
+#                     recipient_list = [user.email, ]
+#                     send_mail(subject, message, email_from, recipient_list)
 
 # main page with links to other
 @api_view(['GET', ])
@@ -148,3 +148,6 @@ class TransactionsViewSet(viewsets.ModelViewSet):
 # simple function providing access to HTML form where token can be obtained.
 def token_creation(request):
     return render(request, 'get_token.html', )
+
+def docker_test(request):
+    return render(request, 'docker.html', )

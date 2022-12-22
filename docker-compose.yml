@@ -1,0 +1,70 @@
+version: "3.9"
+
+networks:
+  test_net_compose:
+
+volumes:
+  pgdata:
+
+services:
+  web:
+#    image: my_drf_test
+    build: ./
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:6060"
+    # command: 
+    #   - python manage.py migrate
+    #   - python manage.py runserver 0.0.0.0:6060
+
+    ports:
+      - "6060:6060"
+    volumes:
+      - .:/src
+    networks:
+      - test_net_compose
+    depends_on:
+      - postgredb
+    restart: unless-stopped
+  postgredb:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "new_db"
+      POSTGRES_USER: "admin1"
+      POSTGRES_PASSWORD: "admin1"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./logs:/var/log
+      - .:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - test_net_compose
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin1 -d new_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.ru"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1G
+    networks:
+      - test_net_compose
+
+

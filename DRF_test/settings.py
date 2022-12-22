@@ -33,9 +33,9 @@ DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = []
 
-CRON_CLASSES = [
-    'drf.views.MyCronJob',
-]
+# CRON_CLASSES = [
+#     'drf.views.MyCronJob',
+# ]
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
-    'django_cron'
+    'django_cron',
 
     'drf'
 ]
@@ -88,10 +88,20 @@ WSGI_APPLICATION = 'DRF_test.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'postgredb',
+        'NAME': 'new_db',
+        'USER': 'admin1',
+        'PASSWORD':'admin1',
+        'PORT':'5432'
     }
 }
 
