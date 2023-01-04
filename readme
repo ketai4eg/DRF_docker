@@ -1,4 +1,7 @@
-This project was done by MStarykevich in frame of test project for intern position.
+This project was done by MStarykevich for DRF practicing.
+Everything can be started by simple docker-compose up
+
+or
 
 Before run application requirements should be installed (pip install -r requirements.txt)
 all migrations should be applied if needed (py manage.py migrate)
